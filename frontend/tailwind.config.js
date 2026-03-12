@@ -4,23 +4,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#0B1020',
-        surface: '#131A2E',
-        primary: '#8B5CF6',
-        primaryDark: '#6D28D9',
-        secondary: '#22D3EE',
-        textMain: '#F8FAFC',
-        textSub: '#94A3B8',
-        success: '#10B981',
-        warning: '#F59E0B',
-        danger: '#EF4444',
+        background: '#FFFFFF',
+        surface: '#F7FFFB',
+        primary: '#98FF98',
+        primaryDark: '#70E0B5',
+        secondary: '#FFA500',
+        textMain: '#D3D3D3',
+        textSub: '#BFBFBF',
+        success: '#7CDFAE',
+        warning: '#FFA500',
+        danger: '#F4A261',
       },
       boxShadow: {
-        glow: '0 0 40px rgba(139,92,246,0.35)',
-        card: '0 10px 30px rgba(0,0,0,0.35)',
+        glow: '0 0 35px rgba(152,255,152,0.35)',
+        card: '0 10px 30px rgba(0,0,0,0.08)',
       },
       backgroundImage: {
-        grid: 'radial-gradient(circle at 1px 1px, rgba(148,163,184,0.16) 1px, transparent 0)',
+        grid: 'radial-gradient(circle at 1px 1px, rgba(210,210,210,0.45) 1px, transparent 0)',
       },
       animation: {
         float: 'float 6s ease-in-out infinite',
