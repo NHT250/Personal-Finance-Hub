@@ -46,6 +46,11 @@ export default function TransactionsPage() {
   });
 
   const monthLabel = activeMonth.toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' });
+  const currentMonthStart = useMemo(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
+  }, []);
+  const isCurrentMonth = activeMonth.getMonth() === currentMonthStart.getMonth() && activeMonth.getFullYear() === currentMonthStart.getFullYear();
 
   const fetchMonthData = useCallback(async () => {
     const token = localStorage.getItem('pfh_token');
@@ -126,12 +131,12 @@ export default function TransactionsPage() {
   };
 
   const goToNextMonth = () => {
+    if (isCurrentMonth) return;
     setActiveMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   };
 
   const goToCurrentMonth = () => {
-    const now = new Date();
-    setActiveMonth(new Date(now.getFullYear(), now.getMonth(), 1));
+    setActiveMonth(currentMonthStart);
   };
 
   const submit = (e) => {
@@ -181,7 +186,7 @@ export default function TransactionsPage() {
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="ghost" onClick={goToPreviousMonth}><ChevronLeft size={15} className="mr-1 inline" />Tháng trước</Button>
             <Button variant="ghost" onClick={goToCurrentMonth}>Tháng này</Button>
-            <Button variant="ghost" onClick={goToNextMonth}>Tháng sau<ChevronRight size={15} className="ml-1 inline" /></Button>
+            <Button variant="ghost" onClick={goToNextMonth} disabled={isCurrentMonth} title={isCurrentMonth ? 'Bạn đang ở tháng hiện tại' : 'Xem tháng sau'}>Tháng sau<ChevronRight size={15} className="ml-1 inline" /></Button>
           </div>
         </div>
       </section>
@@ -222,7 +227,14 @@ export default function TransactionsPage() {
             <input
               type="month"
               value={`${activeMonth.getFullYear()}-${String(activeMonth.getMonth() + 1).padStart(2, '0')}`}
-              onChange={(e) => setActiveMonth(new Date(`${e.target.value}-01`))}
+              onChange={(e) => {
+                const selected = new Date(`${e.target.value}-01`);
+                if (selected > currentMonthStart) {
+                  setActiveMonth(currentMonthStart);
+                  return;
+                }
+                setActiveMonth(selected);
+              }}
               className="w-full rounded-xl border border-white/10 bg-surface/70 px-3 py-2 text-textMain outline-none"
             />
           </label>
