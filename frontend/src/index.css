@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --primary-color: #009688;
+  --background-color: #ffffff;
+  --accent-color: #ff9800;
+  --text-color: #333333;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--background-color);
+  color: var(--text-color);
+}
+
+button,
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+button:hover,
+.btn-primary:hover {
+  background-color: #00796b;
+}
+
+.accent {
+  color: var(--accent-color);
+}
+
+h1,
+h2,
+h3 {
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+p {
+  color: #4f4f4f;
+}
+
+.number {
+  color: #4f4f4f;
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+.glass {
+  @apply border border-slate-200 bg-white/95 backdrop-blur-xl shadow-card;
+}
+
+/* Light theme remap for old translucent utility usage */
+.bg-white\/5 { background-color: rgba(15, 23, 42, 0.04) !important; }
+.bg-white\/10 { background-color: rgba(15, 23, 42, 0.08) !important; }
+.border-white\/10 { border-color: rgba(15, 23, 42, 0.12) !important; }
+.border-white\/15 { border-color: rgba(15, 23, 42, 0.18) !important; }
+.text-white { color: #1a1a1a !important; }
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(120, 120, 120, 0.45);
+  border-radius: 999px;
+}
