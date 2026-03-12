@@ -10,6 +10,7 @@ import StatCard from '../components/ui/StatCard';
 import Modal from '../components/ui/Modal';
 import { formatCurrency } from '../utils/format';
 import api from '../services/api';
+import { useMonth } from '../context/MonthContext';
 
 const categories = ['Ăn uống', 'Hóa đơn', 'Di chuyển', 'Mua sắm', 'Giải trí', 'Lương', 'Freelance', 'Khác'];
 
@@ -32,7 +33,16 @@ export default function TransactionsPage() {
   const [keyword, setKeyword] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('Tất cả danh mục');
   const [typeFilter, setTypeFilter] = useState('Tất cả');
-  const [activeMonth, setActiveMonth] = useState(new Date());
+  const {
+    selectedMonthStart: activeMonth,
+    currentMonthStart,
+    isCurrentMonth,
+    goToPreviousMonth,
+    goToNextMonth,
+    goToCurrentMonth,
+    setMonthFromInput,
+    selectedMonthLabel,
+  } = useMonth();
   const [loadingMonth, setLoadingMonth] = useState(false);
   const [open, setOpen] = useState(false);
   const [toast, setToast] = useState('');
@@ -45,12 +55,7 @@ export default function TransactionsPage() {
     type: 'expense',
   });
 
-  const monthLabel = activeMonth.toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' });
-  const currentMonthStart = useMemo(() => {
-    const now = new Date();
-    return new Date(now.getFullYear(), now.getMonth(), 1);
-  }, []);
-  const isCurrentMonth = activeMonth.getMonth() === currentMonthStart.getMonth() && activeMonth.getFullYear() === currentMonthStart.getFullYear();
+  const monthLabel = selectedMonthLabel;
 
   const fetchMonthData = useCallback(async () => {
     const token = localStorage.getItem('pfh_token');
@@ -126,18 +131,6 @@ export default function TransactionsPage() {
     setOpen(true);
   };
 
-  const goToPreviousMonth = () => {
-    setActiveMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
-  };
-
-  const goToNextMonth = () => {
-    if (isCurrentMonth) return;
-    setActiveMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
-  };
-
-  const goToCurrentMonth = () => {
-    setActiveMonth(currentMonthStart);
-  };
 
   const submit = (e) => {
     e.preventDefault();
@@ -159,7 +152,7 @@ export default function TransactionsPage() {
 
   return (
     <div className="space-y-5">
-      <Topbar title="Giao dịch" subtitle="Theo dõi, nhập liệu và kiểm soát mọi khoản thu chi theo ngày." action={<Button onClick={() => setOpen(true)}>Thêm giao dịch</Button>} showSearch />
+      <Topbar title="Giao dịch" subtitle={`Theo dõi, nhập liệu và kiểm soát mọi khoản thu chi trong ${monthLabel}.`} action={<Button onClick={() => setOpen(true)}>Thêm giao dịch</Button>} showSearch />
 
       <PageHero
         badge="Trung tâm quản lý chi tiêu"
@@ -227,14 +220,8 @@ export default function TransactionsPage() {
             <input
               type="month"
               value={`${activeMonth.getFullYear()}-${String(activeMonth.getMonth() + 1).padStart(2, '0')}`}
-              onChange={(e) => {
-                const selected = new Date(`${e.target.value}-01`);
-                if (selected > currentMonthStart) {
-                  setActiveMonth(currentMonthStart);
-                  return;
-                }
-                setActiveMonth(selected);
-              }}
+              max={`${currentMonthStart.getFullYear()}-${String(currentMonthStart.getMonth() + 1).padStart(2, '0')}`}
+              onChange={(e) => setMonthFromInput(e.target.value)}
               className="w-full rounded-xl border border-white/10 bg-surface/70 px-3 py-2 text-textMain outline-none"
             />
           </label>

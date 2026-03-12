@@ -9,6 +9,7 @@ import { formatCurrency } from '../utils/format';
 import Modal from '../components/ui/Modal';
 import InputField from '../components/ui/InputField';
 import api from '../services/api';
+import { useMonth } from '../context/MonthContext';
 
 const statusOptions = ['Đang tiến hành', 'Hoàn thành', 'Chưa hoàn thành'];
 
@@ -29,6 +30,7 @@ const mapStatusFromProgress = (current, target) => {
 };
 
 export default function GoalsPage() {
+  const { selectedMonthStart, selectedMonthLabel } = useMonth();
   const [goals, setGoals] = useState(mockGoals.map((g) => ({ ...g, status: mapStatusFromProgress(g.current_amount, g.target_amount) })));
   const [openCreate, setOpenCreate] = useState(false);
   const [openAddMoney, setOpenAddMoney] = useState(false);
@@ -84,11 +86,19 @@ export default function GoalsPage() {
     loadGoals();
   }, [filters.search, filters.status, filters.deadline, filters.minSaved]);
 
-  const totalTarget = goals.reduce((sum, goal) => sum + goal.target_amount, 0);
-  const totalCurrent = goals.reduce((sum, goal) => sum + goal.current_amount, 0);
+  const goalsInMonth = useMemo(() => goals.filter((goal) => {
+    if (!goal.deadline) return false;
+    const d = new Date(goal.deadline);
+    return d.getMonth() === selectedMonthStart.getMonth() && d.getFullYear() === selectedMonthStart.getFullYear();
+  }), [goals, selectedMonthStart]);
+
+  const visibleGoals = goalsInMonth.length ? goalsInMonth : goals;
+
+  const totalTarget = visibleGoals.reduce((sum, goal) => sum + goal.target_amount, 0);
+  const totalCurrent = visibleGoals.reduce((sum, goal) => sum + goal.current_amount, 0);
   const progress = totalTarget ? Math.round((totalCurrent / totalTarget) * 100) : 0;
 
-  const highlighted = useMemo(() => [...goals].sort((a, b) => b.current_amount / b.target_amount - a.current_amount / a.target_amount)[0], [goals]);
+  const highlighted = useMemo(() => [...visibleGoals].sort((a, b) => b.current_amount / b.target_amount - a.current_amount / a.target_amount)[0], [visibleGoals]);
 
   const saveGoal = async (e) => {
     e.preventDefault();
@@ -171,14 +181,14 @@ export default function GoalsPage() {
 
   return (
     <div className="space-y-5">
-      <Topbar title="Mục tiêu tiết kiệm" subtitle="Tạo mục tiêu mới, theo dõi tiến độ và cập nhật số tiền tích lũy theo thời gian." action={<Button onClick={() => setOpenCreate(true)}>Tạo mục tiêu mới</Button>} showSearch />
+      <Topbar title="Mục tiêu tiết kiệm" subtitle={`Tạo mục tiêu mới và theo dõi tiến độ trong ${selectedMonthLabel}.`} action={<Button onClick={() => setOpenCreate(true)}>Tạo mục tiêu mới</Button>} showSearch />
 
       <PageHero
         badge="Mục tiêu tài chính"
         title="Biến kế hoạch của bạn thành tiến độ thật sự"
         description="Tạo mục tiêu, cập nhật số tiền đã tiết kiệm và theo dõi tỷ lệ hoàn thành theo từng mốc thời gian."
         action={<Button onClick={() => setOpenCreate(true)}>Tạo mục tiêu</Button>}
-        metricA={<><p className="text-xs text-textSub">Mục tiêu đang theo dõi</p><p className="mt-2 text-3xl font-semibold text-textMain">{goals.length}</p></>}
+        metricA={<><p className="text-xs text-textSub">Mục tiêu trong tháng chọn</p><p className="mt-2 text-3xl font-semibold text-textMain">{visibleGoals.length}</p></>}
         metricB={<><p className="text-xs text-textSub">Tổng tiến độ</p><p className="mt-2 text-3xl font-semibold text-textMain">{progress}%</p></>}
       />
 
@@ -235,7 +245,7 @@ export default function GoalsPage() {
       )}
 
       <section className="grid gap-4 lg:grid-cols-2 2xl:grid-cols-3">
-        {goals.length ? goals.map((goal) => <GoalCard key={goal.id} goal={goal} onAddMoney={openAddMoneyModal} />) : <p className="text-sm text-textSub">Bạn chưa tạo mục tiêu nào.</p>}
+        {visibleGoals.length ? visibleGoals.map((goal) => <GoalCard key={goal.id} goal={goal} onAddMoney={openAddMoneyModal} />) : <p className="text-sm text-textSub">Không có mục tiêu phù hợp trong tháng đã chọn.</p>}
       </section>
 
       <Modal open={openCreate} title="Tạo mục tiêu tài chính" onClose={() => setOpenCreate(false)}>

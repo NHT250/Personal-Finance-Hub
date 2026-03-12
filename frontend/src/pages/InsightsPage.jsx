@@ -7,6 +7,7 @@ import { categoryData, monthlyData, transactions } from '../data/mockData';
 import { formatCurrency } from '../utils/format';
 import PageHero from '../components/ui/PageHero';
 import StatCard from '../components/ui/StatCard';
+import { useMonth } from '../context/MonthContext';
 
 const colors = ['#8B5CF6', '#22D3EE', '#10B981', '#F59E0B'];
 
@@ -19,22 +20,22 @@ const periodOptions = [
 export default function InsightsPage() {
   const [period, setPeriod] = useState('month');
   const [category, setCategory] = useState('Tất cả danh mục');
+  const { selectedDate, selectedMonthStart, selectedMonthLabel } = useMonth();
 
   const filteredTransactions = useMemo(() => {
-    const now = new Date();
     return transactions.filter((tx) => {
       const d = new Date(tx.date);
       const matchCategory = category === 'Tất cả danh mục' || tx.category === category;
 
       if (!matchCategory) return false;
-      if (period === 'year') return d.getFullYear() === now.getFullYear();
+      if (period === 'year') return d.getFullYear() === selectedDate.getFullYear();
       if (period === 'week') {
-        const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+        const diff = Math.floor((selectedDate - d) / (1000 * 60 * 60 * 24));
         return diff >= 0 && diff <= 7;
       }
-      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      return d.getMonth() === selectedMonthStart.getMonth() && d.getFullYear() === selectedMonthStart.getFullYear();
     });
-  }, [period, category]);
+  }, [period, category, selectedDate, selectedMonthStart]);
 
   const report = useMemo(() => {
     const income = filteredTransactions.filter((tx) => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
@@ -58,7 +59,7 @@ export default function InsightsPage() {
 
   return (
     <div className="space-y-5">
-      <Topbar title="Báo cáo tài chính" subtitle="Theo dõi thu chi, tiết kiệm và xu hướng tài chính theo từng giai đoạn." showSearch />
+      <Topbar title="Báo cáo tài chính" subtitle={`Theo dõi thu chi, tiết kiệm và xu hướng tài chính trong ${selectedMonthLabel}.`} showSearch />
 
       <PageHero
         badge="Báo cáo tài chính hàng tháng"

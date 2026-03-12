@@ -9,21 +9,31 @@ import QuickAddModal from '../components/dashboard/QuickAddModal';
 import PageHero from '../components/ui/PageHero';
 import StatCard from '../components/ui/StatCard';
 import { formatCurrency } from '../utils/format';
+import { useMonth } from '../context/MonthContext';
 
 export default function DashboardPage() {
   const [open, setOpen] = useState(false);
+  const { selectedMonthStart, selectedMonthLabel } = useMonth();
+
+  const monthTransactions = useMemo(
+    () => transactions.filter((t) => {
+      const d = new Date(t.date);
+      return d.getMonth() === selectedMonthStart.getMonth() && d.getFullYear() === selectedMonthStart.getFullYear();
+    }),
+    [selectedMonthStart]
+  );
 
   const stats = useMemo(() => {
-    const totalIncome = transactions.filter((t) => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-    const totalExpense = transactions.filter((t) => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+    const totalIncome = monthTransactions.filter((t) => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+    const totalExpense = monthTransactions.filter((t) => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
     const balance = totalIncome - totalExpense;
     const savingRate = totalIncome ? Math.round((balance / totalIncome) * 100) : 0;
     return { totalIncome, totalExpense, balance, savingRate };
-  }, []);
+  }, [monthTransactions]);
 
   return (
     <div className="space-y-5">
-      <Topbar title="Tổng quan tài chính" subtitle="Đây là bức tranh tài chính của bạn trong tháng này." action={<Button onClick={() => setOpen(true)}>Thêm nhanh</Button>} showSearch />
+      <Topbar title="Tổng quan tài chính" subtitle={`Đây là bức tranh tài chính của bạn trong ${selectedMonthLabel}.`} action={<Button onClick={() => setOpen(true)}>Thêm nhanh</Button>} showSearch />
 
       <PageHero
         badge="Trang chủ điều khiển"
@@ -48,7 +58,7 @@ export default function DashboardPage() {
             <span className="text-xs text-textSub">Cập nhật theo thời gian thực</span>
           </div>
           <div className="space-y-2">
-            {transactions.length ? transactions.map((tx) => <TransactionRow key={tx.id} tx={tx} />) : <p className="text-sm text-textSub">Chưa có giao dịch nào.</p>}
+            {monthTransactions.length ? monthTransactions.map((tx) => <TransactionRow key={tx.id} tx={tx} />) : <p className="text-sm text-textSub">Chưa có giao dịch nào trong tháng đã chọn.</p>}
           </div>
         </div>
 
