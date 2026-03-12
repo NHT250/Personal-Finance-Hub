@@ -3,10 +3,12 @@ from flask_cors import CORS
 
 from .utils.config import Config
 from .utils.db import init_db
+from .utils.auth_guard import require_auth
 from .routes.auth import auth_bp
 from .routes.transactions import transactions_bp
 from .routes.goals import goals_bp
 from .routes.insights import insights_bp
+from .routes.account import account_bp
 
 
 def create_app():
@@ -21,6 +23,13 @@ def create_app():
     app.register_blueprint(goals_bp, url_prefix='/goals')
     app.register_blueprint(goals_bp, url_prefix='/api/goals', name='goals_api')
     app.register_blueprint(insights_bp, url_prefix='/insights')
+    app.register_blueprint(account_bp, url_prefix='/account')
+    app.register_blueprint(account_bp, url_prefix='/api/account', name='account_api')
+
+    @app.post('/api/logout')
+    @require_auth
+    def logout_api():
+        return {'success': True, 'message': 'Đăng xuất thành công'}
 
     @app.get('/health')
     def health():

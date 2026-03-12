@@ -1,5 +1,8 @@
-import { LayoutDashboard, Target, ReceiptText, Sparkles, Wallet, X } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { LayoutDashboard, Target, ReceiptText, Sparkles, Wallet, X, LogOut } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import AccountPanel from './AccountPanel';
+import { useAuth } from '../../context/AuthContext';
+import api from '../../services/api';
 
 const items = [
   { to: '/app/dashboard', icon: LayoutDashboard, label: 'Tổng quan' },
@@ -9,6 +12,28 @@ const items = [
 ];
 
 function SidebarContent({ onNavigate, onClose, mobile = false }) {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('pfh_token');
+      if (token) {
+        try {
+          await api.post('/api/logout');
+        } catch {
+          await api.post('/auth/logout');
+        }
+      }
+    } catch {
+      // bỏ qua lỗi backend để đảm bảo người dùng luôn đăng xuất ở client
+    } finally {
+      logout();
+      onClose?.();
+      navigate('/login');
+    }
+  };
+
   return (
     <>
       <div className="mb-8 rounded-2xl border border-white/10 bg-gradient-to-r from-primary/20 to-secondary/10 p-4">
@@ -53,8 +78,19 @@ function SidebarContent({ onNavigate, onClose, mobile = false }) {
         ))}
       </nav>
 
-      <div className="mt-auto rounded-2xl border border-secondary/20 bg-secondary/5 p-4 text-xs text-textSub">
-        Mẹo: dùng <span className="text-secondary">Thêm nhanh</span> để ghi lại giao dịch trong vài giây.
+      <div className="mt-auto space-y-3 pt-4">
+        <div className="rounded-2xl border border-secondary/20 bg-secondary/5 p-4 text-xs text-textSub">
+          Mẹo: dùng <span className="text-secondary">Thêm nhanh</span> để ghi lại giao dịch trong vài giây.
+        </div>
+        <AccountPanel />
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-danger/30 bg-danger/20 px-4 py-2.5 text-sm font-medium text-danger transition hover:bg-danger/35"
+        >
+          <LogOut size={15} />
+          Đăng xuất
+        </button>
       </div>
     </>
   );

@@ -10,12 +10,16 @@ export function AuthProvider({ children }) {
     setUser(nextUser);
   };
 
+  const updateUser = (patch) => {
+    setUser((prev) => ({ ...(prev || {}), ...patch }));
+  };
+
   const logout = () => {
     localStorage.removeItem('pfh_token');
     setUser(null);
   };
 
-  const value = useMemo(() => ({ user, login, logout }), [user]);
+  const value = useMemo(() => ({ user, setUser, updateUser, login, logout }), [user]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
