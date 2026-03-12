@@ -184,7 +184,7 @@ export default function GoalsPage() {
         title="Biến kế hoạch của bạn thành tiến độ thật sự"
         description="Tạo mục tiêu, cập nhật số tiền đã tiết kiệm và theo dõi tỷ lệ hoàn thành theo từng mốc thời gian."
         action={<Button onClick={() => setOpenCreate(true)}>Tạo mục tiêu</Button>}
-        metricA={<><p className="text-xs text-textSub">Mục tiêu trong tháng chọn</p><p className="mt-2 text-3xl font-semibold text-textMain">{visibleGoals.length}</p></>}
+        metricA={<><p className="text-xs text-textSub">Mục tiêu trong kỳ chọn</p><p className="mt-2 text-3xl font-semibold text-textMain">{visibleGoals.length}</p></>}
         metricB={<><p className="text-xs text-textSub">Tổng tiến độ</p><p className="mt-2 text-3xl font-semibold text-textMain">{progress}%</p></>}
       />
 
@@ -241,7 +241,7 @@ export default function GoalsPage() {
       )}
 
       <section className="grid gap-4 lg:grid-cols-2 2xl:grid-cols-3">
-        {visibleGoals.length ? visibleGoals.map((goal) => <GoalCard key={goal.id} goal={goal} onAddMoney={openAddMoneyModal} />) : <p className="text-sm text-textSub">Không có mục tiêu phù hợp trong tháng đã chọn.</p>}
+        {visibleGoals.length ? visibleGoals.map((goal) => <GoalCard key={goal.id} goal={goal} onAddMoney={openAddMoneyModal} />) : <p className="text-sm text-textSub">Không có mục tiêu phù hợp trong kỳ đã chọn.</p>}
       </section>
 
       <Modal open={openCreate} title="Tạo mục tiêu tài chính" onClose={() => setOpenCreate(false)}>

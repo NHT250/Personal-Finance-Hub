@@ -32,10 +32,16 @@ const rangeByPeriod = (anchorDate, period) => {
 };
 
 const periodLabel = {
-  day: 'Ngày hôm nay',
-  week: 'Tuần này',
-  month: 'Tháng này',
-  year: 'Năm này',
+  day: 'Ngày',
+  week: 'Tuần',
+  month: 'Tháng',
+  year: 'Năm',
+};
+
+const pad = (value) => String(value).padStart(2, '0');
+
+const formatDateTime24 = (date) => {
+  return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
 
 export function MonthProvider({ children }) {
@@ -88,7 +94,6 @@ export function MonthProvider({ children }) {
 
   const setPeriod = (period) => {
     setTimePeriod(period);
-    setAnchorDate(new Date());
   };
 
   const inSelectedPeriod = (dateInput) => {
@@ -102,8 +107,11 @@ export function MonthProvider({ children }) {
       setPeriod,
       selectedRange,
       selectedDateDisplay: anchorDate.toLocaleDateString('vi-VN'),
+      selectedDateTimeDisplay: timePeriod === 'day' ? formatDateTime24(anchorDate) : anchorDate.toLocaleDateString('vi-VN'),
       selectedRangeLabel:
-        timePeriod === 'week'
+        timePeriod === 'day'
+          ? formatDateTime24(anchorDate)
+          : timePeriod === 'week'
           ? `${selectedRange.start.toLocaleDateString('vi-VN')} - ${selectedRange.end.toLocaleDateString('vi-VN')}`
           : selectedRange.start.toLocaleDateString('vi-VN'),
       timePeriodDisplay: periodLabel[timePeriod],

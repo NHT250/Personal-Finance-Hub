@@ -39,7 +39,7 @@ function SidebarContent({ onNavigate, onClose, mobile = false }) {
       <div className="mb-8 rounded-2xl border border-white/10 bg-gradient-to-r from-primary/20 to-secondary/10 p-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <img src="https://cdn.postimage.me/2026/03/12/logo.png" alt="Logo" className="w-12 h-12" />
+            <Wallet className="text-secondary" />
             <span className="text-lg font-bold text-textMain">PFH</span>
           </div>
           {mobile && (

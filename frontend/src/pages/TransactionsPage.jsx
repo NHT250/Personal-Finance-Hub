@@ -39,6 +39,8 @@ export default function TransactionsPage() {
     setMonthFromInput,
     selectedMonthLabel,
     selectedRange,
+    selectedRangeLabel,
+    timePeriod,
     timePeriodDisplay,
     inSelectedPeriod,
   } = useMonth();
@@ -54,7 +56,7 @@ export default function TransactionsPage() {
     type: 'expense',
   });
 
-  const monthLabel = selectedMonthLabel;
+  const periodLabel = timePeriod === 'month' ? selectedMonthLabel : selectedRangeLabel;
 
   const fetchMonthData = useCallback(async () => {
     const token = localStorage.getItem('pfh_token');
@@ -91,11 +93,11 @@ export default function TransactionsPage() {
   const filtered = useMemo(() => {
     return items.filter((tx) => {
       const txDate = new Date(tx.date);
-      const sameMonth = inSelectedPeriod(txDate);
+      const inRange = inSelectedPeriod(txDate);
       const matchKeyword = tx.title.toLowerCase().includes(keyword.toLowerCase());
       const matchCategory = categoryFilter === 'Tất cả danh mục' || tx.category === categoryFilter;
       const matchType = typeFilter === 'Tất cả' || tx.type === typeFilter;
-      return sameMonth && matchKeyword && matchCategory && matchType;
+      return inRange && matchKeyword && matchCategory && matchType;
     });
   }, [items, keyword, categoryFilter, typeFilter, inSelectedPeriod]);
 
@@ -164,7 +166,7 @@ export default function TransactionsPage() {
 
       {overBudget && (
         <div className="glass flex items-center gap-3 rounded-2xl border border-warning/40 bg-warning/10 p-4 text-sm text-warning">
-          <BellRing size={18} /> Chi tiêu tháng này đã vượt ngưỡng {formatCurrency(budgetLimit)}. Bạn nên giảm các khoản không thiết yếu.
+          <BellRing size={18} /> Chi tiêu kỳ này đã vượt ngưỡng {formatCurrency(budgetLimit)}. Bạn nên giảm các khoản không thiết yếu.
         </div>
       )}
 
@@ -172,15 +174,15 @@ export default function TransactionsPage() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-textMain">
             <CalendarDays size={18} className="text-secondary" />
-            <h3 className="text-lg font-semibold">{monthLabel}</h3>
-            {loadingMonth && <span className="text-xs text-textSub">Đang tải dữ liệu tháng...</span>}
+            <h3 className="text-lg font-semibold">{periodLabel}</h3>
+            {loadingMonth && <span className="text-xs text-textSub">Đang tải dữ liệu theo kỳ...</span>}
           </div>
           <div className="text-xs text-textSub">Đang xem theo {timePeriodDisplay.toLowerCase()}</div>
         </div>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
-        <StatCard label="Tổng giao dịch" value={`${filtered.length}`} hint={`Trong ${monthLabel}`} accent="secondary" />
+        <StatCard label="Tổng giao dịch" value={`${filtered.length}`} hint={`Trong ${periodLabel}`} accent="secondary" />
         <StatCard label="Tổng chi kỳ đã chọn" value={formatCurrency(totals.expense)} hint="Chi tiêu đã ghi nhận" accent="warning" />
         <StatCard label="Tổng thu kỳ đã chọn" value={formatCurrency(totals.income)} hint="Thu nhập đã ghi nhận" accent="success" />
       </section>
@@ -228,7 +230,7 @@ export default function TransactionsPage() {
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-lg font-semibold text-textMain">Danh sách giao dịch</h3>
             <div className="flex items-center gap-2 text-xs text-textSub">
-              <CalendarDays size={14} /> {monthLabel}
+              <CalendarDays size={14} /> {periodLabel}
             </div>
           </div>
           <div className="mb-2 grid grid-cols-4 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs uppercase tracking-wide text-textSub">
@@ -238,7 +240,7 @@ export default function TransactionsPage() {
             <span className="text-right">Số tiền</span>
           </div>
           <div className="space-y-2">
-            {filtered.length ? filtered.map((tx) => <TransactionRow key={tx.id} tx={tx} />) : <p className="text-sm text-textSub">Không tìm thấy giao dịch phù hợp trong kỳ đã chọn.</p>}
+            {filtered.length ? filtered.map((tx) => <TransactionRow key={tx.id} tx={tx} showTime={timePeriod === 'day'} />) : <p className="text-sm text-textSub">Không tìm thấy giao dịch phù hợp trong kỳ đã chọn.</p>}
           </div>
         </div>
 

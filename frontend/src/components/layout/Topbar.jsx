@@ -2,17 +2,17 @@ import { CalendarDays, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { useMonth } from '../../context/MonthContext';
 
 const periodButtons = [
-  { id: 'todayBtn', value: 'day', label: 'Ngày hôm nay' },
-  { id: 'thisWeekBtn', value: 'week', label: 'Tuần này' },
-  { id: 'thisMonthBtn', value: 'month', label: 'Tháng này' },
-  { id: 'thisYearBtn', value: 'year', label: 'Năm này' },
+  { id: 'dayBtn', value: 'day', label: 'Ngày' },
+  { id: 'weekBtn', value: 'week', label: 'Tuần' },
+  { id: 'monthBtn', value: 'month', label: 'Tháng' },
+  { id: 'yearBtn', value: 'year', label: 'Năm' },
 ];
 
 export default function Topbar({ title, subtitle = 'Làm chủ tiền bạc theo cách rõ ràng và chủ động hơn mỗi ngày.', action, showSearch = false }) {
   const {
     timePeriod,
     setPeriod,
-    selectedDateDisplay,
+    selectedDateTimeDisplay,
     selectedRangeLabel,
     timePeriodDisplay,
     isCurrentPeriod,
@@ -37,7 +37,7 @@ export default function Topbar({ title, subtitle = 'Làm chủ tiền bạc theo
           )}
 
           <div className="glass flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-textSub" id="monthDisplay">
-            <CalendarDays size={15} /> {selectedDateDisplay}
+            <CalendarDays size={15} /> {selectedDateTimeDisplay}
           </div>
           <div className="glass rounded-xl px-3 py-2 text-xs text-textSub" id="timePeriodDisplay">
             {timePeriodDisplay}: {selectedRangeLabel}

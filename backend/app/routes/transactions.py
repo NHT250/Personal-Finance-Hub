@@ -24,6 +24,8 @@ def _serialize_transaction(doc):
 @transactions_bp.get('')
 @require_auth
 def list_transactions():
+    date_param = request.args.get('date')
+    week_param = request.args.get('week')
     month = request.args.get('month', type=int)
     year = request.args.get('year', type=int)
     start_date_param = request.args.get('startDate')
@@ -31,7 +33,30 @@ def list_transactions():
 
     query = {'user_id': g.user_id}
 
-    if start_date_param and end_date_param:
+    if date_param:
+        try:
+            selected_date = datetime.fromisoformat(date_param).date()
+        except ValueError:
+            return fail('Ngày không hợp lệ', 400)
+
+        query['date'] = selected_date.strftime('%Y-%m-%d')
+
+    elif week_param:
+        try:
+            week_year, week_number = week_param.split('-W')
+            week_year = int(week_year)
+            week_number = int(week_number)
+            start_date = datetime.fromisocalendar(week_year, week_number, 1).date()
+            end_date = datetime.fromisocalendar(week_year, week_number, 7).date()
+        except (ValueError, TypeError):
+            return fail('Tuần không hợp lệ', 400)
+
+        query['date'] = {
+            '$gte': start_date.strftime('%Y-%m-%d'),
+            '$lte': end_date.strftime('%Y-%m-%d'),
+        }
+
+    elif start_date_param and end_date_param:
         try:
             start_date = datetime.fromisoformat(start_date_param.replace('Z', '+00:00')).date()
             end_date = datetime.fromisoformat(end_date_param.replace('Z', '+00:00')).date()
@@ -61,10 +86,19 @@ def list_transactions():
             '$lt': next_month.strftime('%Y-%m-%d'),
         }
 
+    elif year:
+        start_date = datetime(year, 1, 1)
+        next_year = datetime(year + 1, 1, 1)
+
+        query['date'] = {
+            '$gte': start_date.strftime('%Y-%m-%d'),
+            '$lt': next_year.strftime('%Y-%m-%d'),
+        }
+
     docs = list(g.db.transactions.find(query).sort('date', -1))
     transactions = [_serialize_transaction(doc) for doc in docs]
 
-    if (month and year) or (start_date_param and end_date_param):
+    if date_param or week_param or month or year or (start_date_param and end_date_param):
         total_income = sum(tx['amount'] for tx in transactions if tx['type'] == 'income')
         total_expenses = sum(tx['amount'] for tx in transactions if tx['type'] == 'expense')
         return ok(

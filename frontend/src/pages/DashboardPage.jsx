@@ -15,15 +15,15 @@ export default function DashboardPage() {
   const [open, setOpen] = useState(false);
   const { inSelectedPeriod, timePeriodDisplay, selectedRangeLabel } = useMonth();
 
-  const monthTransactions = useMemo(() => transactions.filter((t) => inSelectedPeriod(t.date)), [inSelectedPeriod]);
+  const periodTransactions = useMemo(() => transactions.filter((t) => inSelectedPeriod(t.date)), [inSelectedPeriod]);
 
   const stats = useMemo(() => {
-    const totalIncome = monthTransactions.filter((t) => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-    const totalExpense = monthTransactions.filter((t) => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+    const totalIncome = periodTransactions.filter((t) => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+    const totalExpense = periodTransactions.filter((t) => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
     const balance = totalIncome - totalExpense;
     const savingRate = totalIncome ? Math.round((balance / totalIncome) * 100) : 0;
     return { totalIncome, totalExpense, balance, savingRate };
-  }, [monthTransactions]);
+  }, [periodTransactions]);
 
   return (
     <div className="space-y-5">
@@ -39,7 +39,7 @@ export default function DashboardPage() {
       />
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Tổng thu nhập" value={formatCurrency(stats.totalIncome)} hint="Cập nhật theo giao dịch tháng này" accent="success" />
+        <StatCard label="Tổng thu nhập" value={formatCurrency(stats.totalIncome)} hint={`Cập nhật theo ${timePeriodDisplay.toLowerCase()} đang chọn`} accent="success" />
         <StatCard label="Tổng chi tiêu" value={formatCurrency(stats.totalExpense)} hint="Giữ nhịp chi tiêu hợp lý" accent="warning" />
         <StatCard label="Số dư còn lại" value={formatCurrency(stats.balance)} hint="Khoản còn lại sau chi tiêu" accent="primary" />
         <StatCard label="Tỷ lệ tiết kiệm" value={`${stats.savingRate}%`} hint="Tỷ lệ càng cao càng tốt" accent="secondary" />
@@ -52,7 +52,7 @@ export default function DashboardPage() {
             <span className="text-xs text-textSub">Cập nhật theo thời gian thực</span>
           </div>
           <div className="space-y-2">
-            {monthTransactions.length ? monthTransactions.map((tx) => <TransactionRow key={tx.id} tx={tx} />) : <p className="text-sm text-textSub">Chưa có giao dịch nào trong tháng đã chọn.</p>}
+            {periodTransactions.length ? periodTransactions.map((tx) => <TransactionRow key={tx.id} tx={tx} showTime={timePeriodDisplay === 'Ngày'} />) : <p className="text-sm text-textSub">Chưa có giao dịch nào trong kỳ đã chọn.</p>}
           </div>
         </div>
 

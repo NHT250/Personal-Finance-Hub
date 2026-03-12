@@ -1,5 +1,5 @@
 import { ArrowDownLeft, ArrowUpRight, UtensilsCrossed, ShoppingBag, Car, WalletCards } from 'lucide-react';
-import { formatCurrency, formatDate } from '../../utils/format';
+import { formatCurrency, formatDate, formatDateTime24 } from '../../utils/format';
 
 const categoryIcons = {
   'Ăn uống': UtensilsCrossed,
@@ -7,7 +7,7 @@ const categoryIcons = {
   'Di chuyển': Car,
 };
 
-export default function TransactionRow({ tx }) {
+export default function TransactionRow({ tx, showTime = false }) {
   const statusText = tx.type === 'income' ? 'Thu nhập' : 'Chi tiêu';
   const DirectionIcon = tx.type === 'income' ? ArrowUpRight : ArrowDownLeft;
   const CategoryIcon = categoryIcons[tx.category] || WalletCards;
@@ -23,7 +23,7 @@ export default function TransactionRow({ tx }) {
           <p className="text-xs text-textSub">{tx.category}</p>
         </div>
       </div>
-      <p className="text-textSub">{formatDate(tx.date)}</p>
+      <p className="text-textSub">{showTime ? formatDateTime24(tx.date) : formatDate(tx.date)}</p>
       <p className={`inline-flex w-fit items-center gap-1 rounded-full px-2 py-1 text-xs font-medium ${tx.type === 'income' ? 'bg-success/20 text-success' : 'bg-danger/20 text-danger'}`}>
         <DirectionIcon size={13} /> {statusText}
       </p>

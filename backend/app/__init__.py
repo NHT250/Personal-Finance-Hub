@@ -5,7 +5,7 @@ from .utils.config import Config
 from .utils.db import init_db
 from .utils.auth_guard import require_auth
 from .routes.auth import auth_bp
-from .routes.transactions import transactions_bp
+from .routes.transactions import transactions_bp, list_transactions
 from .routes.goals import goals_bp
 from .routes.insights import insights_bp
 from .routes.account import account_bp
@@ -35,5 +35,10 @@ def create_app():
     @app.get('/health')
     def health():
         return {'status': 'ok', 'message': 'PFH API đang hoạt động'}
+
+    @app.get('/api/data')
+    @require_auth
+    def data_api():
+        return list_transactions()
 
     return app
