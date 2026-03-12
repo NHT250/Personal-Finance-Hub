@@ -20,6 +20,7 @@ def create_app():
 
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(transactions_bp, url_prefix='/transactions')
+    app.register_blueprint(transactions_bp, url_prefix='/api/transactions', name='transactions_api')
     app.register_blueprint(goals_bp, url_prefix='/goals')
     app.register_blueprint(goals_bp, url_prefix='/api/goals', name='goals_api')
     app.register_blueprint(insights_bp, url_prefix='/insights')

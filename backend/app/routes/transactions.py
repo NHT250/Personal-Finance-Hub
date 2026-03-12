@@ -8,14 +8,60 @@ from ..utils.response import fail, ok
 transactions_bp = Blueprint('transactions', __name__)
 
 
+def _serialize_transaction(doc):
+    return {
+        'id': str(doc['_id']),
+        'user_id': str(doc['user_id']),
+        'type': doc['type'],
+        'amount': float(doc['amount']),
+        'category': doc['category'],
+        'title': doc['title'],
+        'note': doc.get('note', ''),
+        'date': doc['date'],
+    }
+
+
 @transactions_bp.get('')
 @require_auth
 def list_transactions():
-    docs = list(g.db.transactions.find({'user_id': g.user_id}).sort('date', -1))
-    for doc in docs:
-        doc['id'] = str(doc.pop('_id'))
-        doc['user_id'] = str(doc['user_id'])
-    return ok(docs)
+    month = request.args.get('month', type=int)
+    year = request.args.get('year', type=int)
+
+    query = {'user_id': g.user_id}
+
+    if month and year:
+        if month < 1 or month > 12:
+            return fail('Tháng không hợp lệ', 400)
+
+        start_date = datetime(year, month, 1)
+        if month == 12:
+            next_month = datetime(year + 1, 1, 1)
+        else:
+            next_month = datetime(year, month + 1, 1)
+
+        query['date'] = {
+            '$gte': start_date.strftime('%Y-%m-%d'),
+            '$lt': next_month.strftime('%Y-%m-%d'),
+        }
+
+    docs = list(g.db.transactions.find(query).sort('date', -1))
+    transactions = [_serialize_transaction(doc) for doc in docs]
+
+    if month and year:
+        total_income = sum(tx['amount'] for tx in transactions if tx['type'] == 'income')
+        total_expenses = sum(tx['amount'] for tx in transactions if tx['type'] == 'expense')
+        return ok(
+            {
+                'month': month,
+                'year': year,
+                'transactions': transactions,
+                'totalIncome': total_income,
+                'totalExpenses': total_expenses,
+                'totalSavings': total_income - total_expenses,
+            }
+        )
+
+    return ok(transactions)
 
 
 @transactions_bp.post('')
