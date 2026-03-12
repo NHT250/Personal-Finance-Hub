@@ -11,7 +11,7 @@ export default function StatCard({ label, value, hint, accent = 'primary' }) {
   return (
     <motion.div whileHover={{ y: -4 }} className={`rounded-2xl border border-white/10 bg-gradient-to-br ${map[accent]} p-5`}>
       <p className="text-sm text-textSub">{label}</p>
-      <h3 className="mt-2 text-2xl font-semibold text-textMain">{value}</h3>
+      <h3 className="number mt-2 text-3xl font-bold text-textMain">{value}</h3>
       {hint && <p className="mt-2 text-xs text-textSub">{hint}</p>}
     </motion.div>
   );

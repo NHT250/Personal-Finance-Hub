@@ -6,12 +6,7 @@ import Sidebar from '../components/layout/Sidebar';
 function AppAtmosphere() {
   return (
     <>
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -left-24 top-16 h-80 w-80 rounded-full bg-primary/20 blur-3xl" />
-        <div className="absolute right-[-120px] top-1/3 h-96 w-96 rounded-full bg-secondary/10 blur-3xl" />
-        <div className="absolute bottom-[-120px] left-1/3 h-80 w-80 rounded-full bg-primaryDark/20 blur-3xl" />
-      </div>
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-grid bg-[size:44px_44px] opacity-10" />
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-grid bg-[size:44px_44px] opacity-[0.14]" />
     </>
   );
 }

@@ -86,7 +86,7 @@ function SidebarContent({ onNavigate, onClose, mobile = false }) {
         <button
           type="button"
           onClick={handleLogout}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-danger/30 bg-danger/20 px-4 py-2.5 text-sm font-medium text-danger transition hover:bg-danger/35"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-primary/40 bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-glow transition hover:bg-primaryDark hover:shadow-card"
         >
           <LogOut size={15} />
           Đăng xuất
