@@ -105,6 +105,7 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
 
       <div className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 lg:hidden ${mobileOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`} onClick={onCloseMobile} />
       <aside
+        id="mobile-sidebar"
         className={`glass fixed left-0 top-0 z-50 flex h-screen w-[86vw] max-w-xs flex-col rounded-r-3xl p-4 transition-transform duration-300 lg:hidden ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
