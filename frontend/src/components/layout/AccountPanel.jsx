@@ -7,7 +7,7 @@ import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
 const defaultAvatar =
-  'https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=120&q=80';
+  'https://i.pinimg.com/736x/6f/a5/88/6fa588f89c774e53eb9dc58eae66869f.jpg';
 
 export default function AccountPanel() {
   const { user, setUser, updateUser } = useAuth();
