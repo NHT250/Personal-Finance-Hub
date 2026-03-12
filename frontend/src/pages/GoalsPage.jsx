@@ -30,7 +30,7 @@ const mapStatusFromProgress = (current, target) => {
 };
 
 export default function GoalsPage() {
-  const { selectedMonthStart, selectedMonthLabel } = useMonth();
+  const { inSelectedPeriod, timePeriodDisplay, selectedRangeLabel } = useMonth();
   const [goals, setGoals] = useState(mockGoals.map((g) => ({ ...g, status: mapStatusFromProgress(g.current_amount, g.target_amount) })));
   const [openCreate, setOpenCreate] = useState(false);
   const [openAddMoney, setOpenAddMoney] = useState(false);
@@ -86,11 +86,7 @@ export default function GoalsPage() {
     loadGoals();
   }, [filters.search, filters.status, filters.deadline, filters.minSaved]);
 
-  const goalsInMonth = useMemo(() => goals.filter((goal) => {
-    if (!goal.deadline) return false;
-    const d = new Date(goal.deadline);
-    return d.getMonth() === selectedMonthStart.getMonth() && d.getFullYear() === selectedMonthStart.getFullYear();
-  }), [goals, selectedMonthStart]);
+  const goalsInMonth = useMemo(() => goals.filter((goal) => goal.deadline && inSelectedPeriod(goal.deadline)), [goals, inSelectedPeriod]);
 
   const visibleGoals = goalsInMonth.length ? goalsInMonth : goals;
 
@@ -181,7 +177,7 @@ export default function GoalsPage() {
 
   return (
     <div className="space-y-5">
-      <Topbar title="Mục tiêu tiết kiệm" subtitle={`Tạo mục tiêu mới và theo dõi tiến độ trong ${selectedMonthLabel}.`} action={<Button onClick={() => setOpenCreate(true)}>Tạo mục tiêu mới</Button>} showSearch />
+      <Topbar title="Mục tiêu tiết kiệm" subtitle={`Tạo mục tiêu mới và theo dõi tiến độ theo ${timePeriodDisplay.toLowerCase()} (${selectedRangeLabel}).`} action={<Button onClick={() => setOpenCreate(true)}>Tạo mục tiêu mới</Button>} showSearch />
 
       <PageHero
         badge="Mục tiêu tài chính"

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { BellRing, CalendarDays, ChevronLeft, ChevronRight, PlusCircle, SlidersHorizontal } from 'lucide-react';
+import { BellRing, CalendarDays, PlusCircle, SlidersHorizontal } from 'lucide-react';
 import Topbar from '../components/layout/Topbar';
 import TransactionRow from '../components/transactions/TransactionRow';
 import { transactions as seedTransactions } from '../data/mockData';
@@ -36,12 +36,11 @@ export default function TransactionsPage() {
   const {
     selectedMonthStart: activeMonth,
     currentMonthStart,
-    isCurrentMonth,
-    goToPreviousMonth,
-    goToNextMonth,
-    goToCurrentMonth,
     setMonthFromInput,
     selectedMonthLabel,
+    selectedRange,
+    timePeriodDisplay,
+    inSelectedPeriod,
   } = useMonth();
   const [loadingMonth, setLoadingMonth] = useState(false);
   const [open, setOpen] = useState(false);
@@ -62,15 +61,15 @@ export default function TransactionsPage() {
     if (!token) return;
 
     setLoadingMonth(true);
-    const month = activeMonth.getMonth() + 1;
-    const year = activeMonth.getFullYear();
+    const startDate = selectedRange.start.toISOString();
+    const endDate = selectedRange.end.toISOString();
 
     try {
       let res;
       try {
-        res = await api.get('/api/transactions', { params: { month, year } });
+        res = await api.get('/api/transactions', { params: { startDate, endDate } });
       } catch {
-        res = await api.get('/transactions', { params: { month, year } });
+        res = await api.get('/transactions', { params: { startDate, endDate } });
       }
 
       const responseData = res?.data?.data;
@@ -83,7 +82,7 @@ export default function TransactionsPage() {
     } finally {
       setLoadingMonth(false);
     }
-  }, [activeMonth]);
+  }, [selectedRange]);
 
   useEffect(() => {
     fetchMonthData();
@@ -92,13 +91,13 @@ export default function TransactionsPage() {
   const filtered = useMemo(() => {
     return items.filter((tx) => {
       const txDate = new Date(tx.date);
-      const sameMonth = txDate.getMonth() === activeMonth.getMonth() && txDate.getFullYear() === activeMonth.getFullYear();
+      const sameMonth = inSelectedPeriod(txDate);
       const matchKeyword = tx.title.toLowerCase().includes(keyword.toLowerCase());
       const matchCategory = categoryFilter === 'Tất cả danh mục' || tx.category === categoryFilter;
       const matchType = typeFilter === 'Tất cả' || tx.type === typeFilter;
       return sameMonth && matchKeyword && matchCategory && matchType;
     });
-  }, [items, keyword, categoryFilter, typeFilter, activeMonth]);
+  }, [items, keyword, categoryFilter, typeFilter, inSelectedPeriod]);
 
   const totals = useMemo(() => {
     const income = filtered.filter((tx) => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
@@ -152,15 +151,15 @@ export default function TransactionsPage() {
 
   return (
     <div className="space-y-5">
-      <Topbar title="Giao dịch" subtitle={`Theo dõi, nhập liệu và kiểm soát mọi khoản thu chi trong ${monthLabel}.`} action={<Button onClick={() => setOpen(true)}>Thêm giao dịch</Button>} showSearch />
+      <Topbar title="Giao dịch" subtitle={`Theo dõi, nhập liệu và kiểm soát mọi khoản thu chi theo ${timePeriodDisplay.toLowerCase()}.`} action={<Button onClick={() => setOpen(true)}>Thêm giao dịch</Button>} showSearch />
 
       <PageHero
         badge="Trung tâm quản lý chi tiêu"
         title="Quản lý chi tiêu thông minh theo ngày, tuần và tháng"
         description="Nhập liệu nhanh theo danh mục, xem lịch tài chính trực quan và kiểm soát ngân sách với cảnh báo kịp thời."
         action={<Button onClick={() => setOpen(true)}>Nhập thu / chi</Button>}
-        metricA={<><p className="text-xs text-textSub">Số giao dịch trong tháng chọn</p><p className="mt-2 text-3xl font-semibold text-textMain">{filtered.length}</p></>}
-        metricB={<><p className="text-xs text-textSub">Số dư trong tháng chọn</p><p className="mt-2 text-3xl font-semibold text-textMain">{formatCurrency(totals.balance)}</p></>}
+        metricA={<><p className="text-xs text-textSub">Số giao dịch trong kỳ chọn</p><p className="mt-2 text-3xl font-semibold text-textMain">{filtered.length}</p></>}
+        metricB={<><p className="text-xs text-textSub">Số dư trong kỳ chọn</p><p className="mt-2 text-3xl font-semibold text-textMain">{formatCurrency(totals.balance)}</p></>}
       />
 
       {overBudget && (
@@ -176,18 +175,14 @@ export default function TransactionsPage() {
             <h3 className="text-lg font-semibold">{monthLabel}</h3>
             {loadingMonth && <span className="text-xs text-textSub">Đang tải dữ liệu tháng...</span>}
           </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <Button variant="ghost" onClick={goToPreviousMonth}><ChevronLeft size={15} className="mr-1 inline" />Tháng trước</Button>
-            <Button variant="ghost" onClick={goToCurrentMonth}>Tháng này</Button>
-            <Button variant="ghost" onClick={goToNextMonth} disabled={isCurrentMonth} title={isCurrentMonth ? 'Bạn đang ở tháng hiện tại' : 'Xem tháng sau'}>Tháng sau<ChevronRight size={15} className="ml-1 inline" /></Button>
-          </div>
+          <div className="text-xs text-textSub">Đang xem theo {timePeriodDisplay.toLowerCase()}</div>
         </div>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
         <StatCard label="Tổng giao dịch" value={`${filtered.length}`} hint={`Trong ${monthLabel}`} accent="secondary" />
-        <StatCard label="Tổng chi tháng đã chọn" value={formatCurrency(totals.expense)} hint="Chi tiêu đã ghi nhận" accent="warning" />
-        <StatCard label="Tổng thu tháng đã chọn" value={formatCurrency(totals.income)} hint="Thu nhập đã ghi nhận" accent="success" />
+        <StatCard label="Tổng chi kỳ đã chọn" value={formatCurrency(totals.expense)} hint="Chi tiêu đã ghi nhận" accent="warning" />
+        <StatCard label="Tổng thu kỳ đã chọn" value={formatCurrency(totals.income)} hint="Thu nhập đã ghi nhận" accent="success" />
       </section>
 
       <section className="glass rounded-3xl p-5 lg:p-6">
@@ -243,7 +238,7 @@ export default function TransactionsPage() {
             <span className="text-right">Số tiền</span>
           </div>
           <div className="space-y-2">
-            {filtered.length ? filtered.map((tx) => <TransactionRow key={tx.id} tx={tx} />) : <p className="text-sm text-textSub">Không tìm thấy giao dịch phù hợp trong tháng đã chọn.</p>}
+            {filtered.length ? filtered.map((tx) => <TransactionRow key={tx.id} tx={tx} />) : <p className="text-sm text-textSub">Không tìm thấy giao dịch phù hợp trong kỳ đã chọn.</p>}
           </div>
         </div>
 

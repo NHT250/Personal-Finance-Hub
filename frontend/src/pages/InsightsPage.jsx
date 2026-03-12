@@ -12,15 +12,15 @@ import { useMonth } from '../context/MonthContext';
 const colors = ['#8B5CF6', '#22D3EE', '#10B981', '#F59E0B'];
 
 const periodOptions = [
-  { value: 'month', label: 'Theo tháng' },
+  { value: 'day', label: 'Theo ngày' },
   { value: 'week', label: 'Theo tuần' },
+  { value: 'month', label: 'Theo tháng' },
   { value: 'year', label: 'Theo năm' },
 ];
 
 export default function InsightsPage() {
-  const [period, setPeriod] = useState('month');
   const [category, setCategory] = useState('Tất cả danh mục');
-  const { selectedDate, selectedMonthStart, selectedMonthLabel } = useMonth();
+  const { timePeriod, inSelectedPeriod, timePeriodDisplay, selectedRangeLabel } = useMonth();
 
   const filteredTransactions = useMemo(() => {
     return transactions.filter((tx) => {
@@ -28,14 +28,9 @@ export default function InsightsPage() {
       const matchCategory = category === 'Tất cả danh mục' || tx.category === category;
 
       if (!matchCategory) return false;
-      if (period === 'year') return d.getFullYear() === selectedDate.getFullYear();
-      if (period === 'week') {
-        const diff = Math.floor((selectedDate - d) / (1000 * 60 * 60 * 24));
-        return diff >= 0 && diff <= 7;
-      }
-      return d.getMonth() === selectedMonthStart.getMonth() && d.getFullYear() === selectedMonthStart.getFullYear();
+      return inSelectedPeriod(d);
     });
-  }, [period, category, selectedDate, selectedMonthStart]);
+  }, [category, inSelectedPeriod]);
 
   const report = useMemo(() => {
     const income = filteredTransactions.filter((tx) => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
@@ -59,7 +54,7 @@ export default function InsightsPage() {
 
   return (
     <div className="space-y-5">
-      <Topbar title="Báo cáo tài chính" subtitle={`Theo dõi thu chi, tiết kiệm và xu hướng tài chính trong ${selectedMonthLabel}.`} showSearch />
+      <Topbar title="Báo cáo tài chính" subtitle={`Theo dõi thu chi, tiết kiệm và xu hướng tài chính theo ${timePeriodDisplay.toLowerCase()} (${selectedRangeLabel}).`} showSearch />
 
       <PageHero
         badge="Báo cáo tài chính hàng tháng"
@@ -72,8 +67,8 @@ export default function InsightsPage() {
       <section className="glass rounded-3xl p-5 lg:p-6">
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           <label className="space-y-2 text-sm text-textSub">
-            <span>Kiểu báo cáo</span>
-            <select value={period} onChange={(e) => setPeriod(e.target.value)} className="w-full rounded-xl border border-white/10 bg-surface/70 px-3 py-2 text-textMain outline-none">
+            <span>Kiểu báo cáo (đồng bộ toàn hệ thống)</span>
+            <select value={timePeriod} disabled className="w-full rounded-xl border border-white/10 bg-surface/70 px-3 py-2 text-textMain outline-none">
               {periodOptions.map((opt) => <option value={opt.value} key={opt.value}>{opt.label}</option>)}
             </select>
           </label>

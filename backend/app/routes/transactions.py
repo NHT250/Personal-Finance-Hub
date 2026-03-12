@@ -26,10 +26,27 @@ def _serialize_transaction(doc):
 def list_transactions():
     month = request.args.get('month', type=int)
     year = request.args.get('year', type=int)
+    start_date_param = request.args.get('startDate')
+    end_date_param = request.args.get('endDate')
 
     query = {'user_id': g.user_id}
 
-    if month and year:
+    if start_date_param and end_date_param:
+        try:
+            start_date = datetime.fromisoformat(start_date_param.replace('Z', '+00:00')).date()
+            end_date = datetime.fromisoformat(end_date_param.replace('Z', '+00:00')).date()
+        except ValueError:
+            return fail('Khoảng ngày không hợp lệ', 400)
+
+        if start_date > end_date:
+            return fail('Khoảng ngày không hợp lệ', 400)
+
+        query['date'] = {
+            '$gte': start_date.strftime('%Y-%m-%d'),
+            '$lte': end_date.strftime('%Y-%m-%d'),
+        }
+
+    elif month and year:
         if month < 1 or month > 12:
             return fail('Tháng không hợp lệ', 400)
 
@@ -47,13 +64,15 @@ def list_transactions():
     docs = list(g.db.transactions.find(query).sort('date', -1))
     transactions = [_serialize_transaction(doc) for doc in docs]
 
-    if month and year:
+    if (month and year) or (start_date_param and end_date_param):
         total_income = sum(tx['amount'] for tx in transactions if tx['type'] == 'income')
         total_expenses = sum(tx['amount'] for tx in transactions if tx['type'] == 'expense')
         return ok(
             {
                 'month': month,
                 'year': year,
+                'startDate': start_date_param,
+                'endDate': end_date_param,
                 'transactions': transactions,
                 'totalIncome': total_income,
                 'totalExpenses': total_expenses,

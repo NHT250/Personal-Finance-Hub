@@ -13,15 +13,9 @@ import { useMonth } from '../context/MonthContext';
 
 export default function DashboardPage() {
   const [open, setOpen] = useState(false);
-  const { selectedMonthStart, selectedMonthLabel } = useMonth();
+  const { inSelectedPeriod, timePeriodDisplay, selectedRangeLabel } = useMonth();
 
-  const monthTransactions = useMemo(
-    () => transactions.filter((t) => {
-      const d = new Date(t.date);
-      return d.getMonth() === selectedMonthStart.getMonth() && d.getFullYear() === selectedMonthStart.getFullYear();
-    }),
-    [selectedMonthStart]
-  );
+  const monthTransactions = useMemo(() => transactions.filter((t) => inSelectedPeriod(t.date)), [inSelectedPeriod]);
 
   const stats = useMemo(() => {
     const totalIncome = monthTransactions.filter((t) => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
@@ -33,7 +27,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-5">
-      <Topbar title="Tổng quan tài chính" subtitle={`Đây là bức tranh tài chính của bạn trong ${selectedMonthLabel}.`} action={<Button onClick={() => setOpen(true)}>Thêm nhanh</Button>} showSearch />
+      <Topbar title="Tổng quan tài chính" subtitle={`Đây là bức tranh tài chính của bạn theo ${timePeriodDisplay.toLowerCase()} (${selectedRangeLabel}).`} action={<Button onClick={() => setOpen(true)}>Thêm nhanh</Button>} showSearch />
 
       <PageHero
         badge="Trang chủ điều khiển"
