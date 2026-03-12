@@ -36,10 +36,10 @@ function SidebarContent({ onNavigate, onClose, mobile = false }) {
 
   return (
     <>
-      <div className="mb-8 rounded-2xl border border-white/10 bg-gradient-to-r from-primary/20 to-secondary/10 p-4">
+      <div className="mb-8 rounded-2xl border border-white  /10 bg-gradient-to-r from-primary/20 to-secondary/10 p-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Wallet className="text-secondary" />
+            <img src="https://cdn.postimage.me/2026/03/12/logo.png" alt="Logo" className="w-12 h-12" />
             <span className="text-lg font-bold text-textMain">PFH</span>
           </div>
           {mobile && (
@@ -55,7 +55,6 @@ function SidebarContent({ onNavigate, onClose, mobile = false }) {
         </div>
         <p className="mt-2 text-xs text-textSub">Không gian tài chính cá nhân hiện đại cho bạn.</p>
       </div>
-
       <nav className="space-y-2">
         {items.map(({ to, icon: Icon, label }) => (
           <NavLink
