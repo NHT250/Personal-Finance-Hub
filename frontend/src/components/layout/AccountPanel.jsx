@@ -119,7 +119,7 @@ export default function AccountPanel() {
   return (
     <>
       <aside className="glass mt-auto w-full rounded-2xl border border-white/10 bg-surface/75 p-3 shadow-card">
-        <div className="flex items-start gap-3">
+        <div className="flex items-center gap-3">
           <button onClick={() => setOpenAvatar(true)} className="relative shrink-0" aria-label="Thay đổi ảnh đại diện">
             <img src={avatarPreview} alt="Ảnh đại diện" className="h-14 w-14 rounded-full border border-white/20 object-cover" />
             <span className="absolute -bottom-1 -right-1 rounded-full bg-primary p-1 text-white"><Camera size={11} /></span>
@@ -129,10 +129,27 @@ export default function AccountPanel() {
             <p className="truncate font-semibold text-textMain">{user?.name || 'Người dùng'}</p>
             <p className="truncate text-xs text-textSub">{user?.email || 'Bạn chưa đăng nhập'}</p>
             <p className="text-xs text-textSub">{user?.phone || 'Chưa cập nhật số điện thoại'}</p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              <Button variant="ghost" className="px-3 py-1 text-xs" onClick={() => setOpenEdit(true)}><Edit3 size={12} className="mr-1 inline" /> Chỉnh sửa</Button>
-              <Button variant="ghost" className="px-3 py-1 text-xs" onClick={() => setOpenPassword(true)}><KeyRound size={12} className="mr-1 inline" /> Đổi mật khẩu</Button>
-            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setOpenEdit(true)}
+              aria-label="Chỉnh sửa tài khoản"
+              title="Chỉnh sửa tài khoản"
+              className="rounded-full border border-white/15 bg-white/5 p-2.5 text-textMain transition hover:bg-white/15"
+            >
+              <Edit3 size={15} />
+            </button>
+            <button
+              type="button"
+              onClick={() => setOpenPassword(true)}
+              aria-label="Đổi mật khẩu"
+              title="Đổi mật khẩu"
+              className="rounded-full border border-white/15 bg-white/5 p-2.5 text-textMain transition hover:bg-white/15"
+            >
+              <KeyRound size={15} />
+            </button>
           </div>
         </div>
       </aside>
