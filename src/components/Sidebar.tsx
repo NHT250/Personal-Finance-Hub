@@ -18,7 +18,7 @@ export const Sidebar = ({ activeTab, onTabChange, onLogout, onNewTransaction }: 
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 glassmorphism ambient-shadow p-8 flex flex-col z-50">
+    <aside className="sidebar-shell fixed left-0 top-0 h-screen w-72 glassmorphism ambient-shadow p-8 flex flex-col z-50">
       <div className="flex items-center gap-3 mb-12">
         <img
           src="https://cdn.postimage.me/2026/03/12/logo.png"

@@ -3,6 +3,7 @@ import { Search, Bell, Settings, ChevronDown } from 'lucide-react';
 import { Input } from './Input';
 import { NotificationsPopover } from './NotificationsPopover';
 import { ProfilePopover } from './ProfilePopover';
+import { DeviceModeToggle } from './DeviceModeToggle';
 
 interface TopBarProps {
   onLogout: () => void;
@@ -14,7 +15,7 @@ export const TopBar = ({ onLogout, onNavigateToSettings }: TopBarProps) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 glassmorphism ambient-shadow flex items-center justify-between w-full px-10 h-24">
+    <header className="topbar-shell sticky top-0 z-40 glassmorphism ambient-shadow flex items-center justify-between w-full px-10 h-24">
       <div className="flex-1 max-w-xl">
         <Input
           placeholder="Tìm kiếm giao dịch, mục tiêu..."
@@ -24,6 +25,7 @@ export const TopBar = ({ onLogout, onNavigateToSettings }: TopBarProps) => {
       </div>
 
       <div className="flex items-center gap-6">
+        <DeviceModeToggle />
         <div className="relative">
           <button 
             onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}

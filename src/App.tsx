@@ -98,9 +98,9 @@ export default function App() {
         }}
       />
       
-      <div className="flex-1 ml-72">
+      <div className="content-shell flex-1 ml-72">
         <TopBar onLogout={() => setAuthState('login')} onNavigateToSettings={() => setActiveTab('settings')} />
-        <main className="p-10 max-w-7xl mx-auto">
+        <main className="responsive-main p-10 max-w-7xl mx-auto">
           {renderContent()}
         </main>
       </div>
