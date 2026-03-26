@@ -7,7 +7,7 @@
   --color-surface-container-lowest: #ffffff;
   --color-surface-bright: #f8fafb;
   --color-on-surface: #191c1d;
-  --color-on-surface-variant: #3e4946;
+  --color-on-surface-variant: #333d3a;
   
   --color-primary: #004f46;
   --color-primary-container: #00695e;
@@ -40,6 +40,9 @@
 
   body {
     @apply bg-surface text-on-surface font-body antialiased;
+    line-height: 1.65;
+    letter-spacing: 0.01em;
+    font-feature-settings: "kern" 1;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -47,21 +50,24 @@
   }
 
   h1 {
-    font-size: 2.75rem;
+    font-size: clamp(2.5rem, 3.8vw, 3.35rem);
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
   }
 
   h2 {
-    font-size: 2.25rem;
+    font-size: clamp(2rem, 3vw, 2.7rem);
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.012em;
+    line-height: 1.2;
   }
 
   h3 {
-    font-size: 1.75rem;
+    font-size: clamp(1.5rem, 2.3vw, 2rem);
     font-weight: 700;
     letter-spacing: -0.01em;
+    line-height: 1.25;
   }
 
   h4, h5, h6 {
@@ -71,6 +77,15 @@
 
   p, span, label, small {
     font-family: var(--font-body);
+    line-height: 1.6;
+  }
+
+  p, span, label {
+    letter-spacing: 0.012em;
+  }
+
+  small {
+    font-size: 0.82rem;
   }
 }
 
@@ -117,9 +132,42 @@
 
   .meta-text {
     font-family: var(--font-body);
-    font-size: 0.9rem;
-    letter-spacing: 0.01em;
+    font-size: 0.84rem;
+    letter-spacing: 0.02em;
     color: var(--color-on-surface-variant);
+    line-height: 1.55;
+  }
+
+  .section-title {
+    @apply font-headline font-extrabold text-on-surface;
+    letter-spacing: -0.012em;
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    @apply text-on-surface-variant font-medium;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    letter-spacing: 0.018em;
+  }
+
+  .metric-title {
+    @apply uppercase font-bold;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: color-mix(in oklab, var(--color-on-surface-variant) 90%, black 10%);
+  }
+
+  .metric-value {
+    @apply font-headline font-black;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+  }
+
+  .data-highlight {
+    @apply font-bold;
+    letter-spacing: 0.01em;
+    color: var(--color-primary);
   }
 
   /* Responsive helper classes */

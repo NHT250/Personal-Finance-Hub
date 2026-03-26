@@ -86,8 +86,8 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-2">
-          <h1 className="text-5xl font-headline font-extrabold text-on-surface tracking-tighter">Giao dịch</h1>
-          <p className="text-on-surface-variant font-medium text-lg">Xem và quản lý dòng tiền cá nhân của bạn</p>
+          <h1 className="section-title text-5xl md:text-6xl">Giao dịch</h1>
+          <p className="section-subtitle text-base md:text-lg">Xem và quản lý dòng tiền cá nhân của bạn</p>
         </div>
         <div className="flex flex-col md:flex-row gap-3 md:items-center">
           <div className="flex gap-2 flex-wrap items-center bg-surface-container-low p-2 rounded-full shadow-inner">
@@ -149,8 +149,8 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
       <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <Card className="bg-primary-container p-10 flex flex-col justify-between group overflow-hidden relative shadow-2xl shadow-primary/10">
           <div className="z-10 space-y-2">
-            <p className="text-on-primary-container text-[10px] font-black opacity-60 uppercase tracking-[0.2em]">Tổng Thu nhập</p>
-            <h3 className="text-4xl font-headline font-black text-white tracking-tighter">{formatCurrency(totalIncome)}</h3>
+            <p className="metric-title text-white/80">Tổng Thu nhập</p>
+            <h3 className="metric-value text-4xl text-white">{formatCurrency(totalIncome)}</h3>
           </div>
           <div className="mt-10 flex items-center gap-2 z-10">
             <span className="px-3 py-1 bg-white/20 rounded-md text-white text-[10px] font-black">+12%</span>
@@ -161,8 +161,8 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
 
         <Card className="bg-tertiary-container p-10 flex flex-col justify-between group overflow-hidden relative shadow-2xl shadow-tertiary/10">
           <div className="z-10 space-y-2">
-            <p className="text-on-tertiary-container text-[10px] font-black opacity-60 uppercase tracking-[0.2em]">Tổng Chi tiêu</p>
-            <h3 className="text-4xl font-headline font-black text-white tracking-tighter">{formatCurrency(totalExpense)}</h3>
+            <p className="metric-title text-white/80">Tổng Chi tiêu</p>
+            <h3 className="metric-value text-4xl text-white">{formatCurrency(totalExpense)}</h3>
           </div>
           <div className="mt-10 flex items-center gap-2 z-10">
             <span className="px-3 py-1 bg-white/20 rounded-md text-white text-[10px] font-black">-5%</span>
@@ -173,8 +173,8 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
 
         <Card variant="lowest" className="p-10 shadow-xl flex flex-col justify-between border border-outline-variant/10">
           <div className="space-y-2">
-            <p className="text-on-surface-variant text-[10px] font-black opacity-60 uppercase tracking-[0.2em]">Số dư ròng</p>
-            <h3 className="text-4xl font-headline font-black text-primary tracking-tighter">{formatCurrency(net)}</h3>
+            <p className="metric-title">Số dư ròng</p>
+            <h3 className="metric-value text-4xl text-primary">{formatCurrency(net)}</h3>
           </div>
           <div className="mt-10 space-y-3">
             <div className="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
@@ -190,7 +190,7 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
         {/* Transaction List */}
         <div className="lg:col-span-8 space-y-8">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-headline font-extrabold text-on-surface tracking-tighter">Lịch Sử Giao Dịch</h2>
+            <h2 className="section-title text-3xl">Lịch Sử Giao Dịch</h2>
             <div className="flex gap-4">
               <button className="p-3 bg-surface-container-low rounded-xl hover:bg-surface-container transition-all shadow-sm">
                 <Filter size={18} className="text-on-surface-variant" />
@@ -204,7 +204,7 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
           <div className="space-y-12">
             {Object.entries(groups).map(([label, list]) => (
               <div key={label} className="space-y-6">
-                <p className="text-[10px] font-black text-on-surface-variant/40 uppercase tracking-[0.3em] pl-2">{label}</p>
+                <p className="meta-text font-black text-on-surface-variant/65 uppercase tracking-[0.22em] pl-2">{label}</p>
                 <div className="space-y-4">
                   {list.map((tx) => (
                     <Card key={tx.id} variant="lowest" className="p-6 flex items-center justify-between hover:shadow-2xl hover:bg-surface-bright transition-all cursor-pointer group border border-outline-variant/5">
@@ -217,14 +217,14 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
                         </div>
                         <div>
                           <p className="font-headline font-bold text-on-surface text-lg group-hover:text-primary transition-colors">{tx.title}</p>
-                          <p className="text-xs text-on-surface-variant font-medium">{tx.category}</p>
+                          <p className="section-subtitle text-xs">{tx.category}</p>
                         </div>
                       </div>
                       <div className="text-right space-y-1">
                         <p className={cn("text-xl font-headline font-black", tx.type === 'expense' ? "text-tertiary" : "text-primary")}>
                           {tx.type === 'expense' ? '-' : '+'}{formatCurrency(tx.amount)}
                         </p>
-                        <p className="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest">
+                        <p className="meta-text text-on-surface-variant/80 font-bold uppercase">
                           {new Date(tx.date).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })} • {tx.method}
                         </p>
                       </div>
@@ -241,7 +241,7 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
           {/* Mini Calendar */}
           <Card variant="lowest" className="p-8 shadow-xl border border-outline-variant/5">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="font-headline font-extrabold text-on-surface">Lịch Tài chính</h2>
+            <h2 className="section-title text-2xl">Lịch Tài chính</h2>
               <div className="flex gap-2">
                 <button className="p-1.5 hover:bg-surface-container-low rounded-full text-on-surface-variant transition-colors"><ArrowUpDown size={14} className="rotate-90" /></button>
               </div>
@@ -276,7 +276,7 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
 
           {/* Category Allocation */}
           <Card variant="low" className="p-8 border-none shadow-sm">
-            <h2 className="font-headline font-bold text-primary mb-8">Phân bổ</h2>
+            <h2 className="font-headline font-bold text-primary text-2xl mb-8">Phân bổ</h2>
             <div className="space-y-6">
               {[
                 { label: 'Ăn uống', value: 45, color: 'bg-primary' },
@@ -284,7 +284,7 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
                 { label: 'Dịch vụ', value: 15, color: 'bg-secondary' },
               ].map((item) => (
                 <div key={item.label} className="space-y-2">
-                  <div className="flex items-center justify-between text-xs font-bold">
+                  <div className="flex items-center justify-between text-sm font-bold">
                     <div className="flex items-center gap-2">
                       <div className={cn("w-2 h-2 rounded-full", item.color)}></div>
                       <span className="text-on-surface">{item.label}</span>
@@ -303,8 +303,8 @@ export const Transactions = ({ transactions, onNewTransaction }: TransactionsPro
           <Card className="p-8 bg-gradient-to-br from-primary to-primary-container text-white overflow-hidden shadow-2xl shadow-primary/20 relative">
             <div className="relative z-10 space-y-6">
               <div className="space-y-2">
-                <h3 className="font-headline font-bold text-lg">Trí tuệ Tài chính</h3>
-                <p className="text-sm text-white/70 leading-relaxed">
+                <h3 className="font-headline font-bold text-xl">Trí tuệ Tài chính</h3>
+                <p className="text-sm text-white/85 leading-loose">
                   Bạn đã chi tiêu ít hơn 15% cho "Ăn uống" so với tuần trước. Dòng tiền của bạn đang trở nên tối ưu hơn.
                 </p>
               </div>
