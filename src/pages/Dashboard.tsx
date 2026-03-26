@@ -25,10 +25,10 @@ export const Dashboard = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden rounded-xl premium-gradient p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl shadow-primary/20">
         <div className="relative z-10 space-y-4 max-w-xl">
-          <h1 className="font-headline text-4xl font-extrabold text-white leading-tight">
+          <h1 className="font-headline text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight">
             Chào buổi sáng, DAT.
           </h1>
-          <p className="text-white/80 text-lg font-medium">
+          <p className="text-white/90 text-base md:text-lg font-medium leading-relaxed">
             Câu chuyện tài chính của bạn đang rất khả quan. Bạn đã tiết kiệm nhiều hơn 15% so với tháng trước.
           </p>
           <div className="pt-4">
@@ -40,17 +40,17 @@ export const Dashboard = () => {
 
         <div className="relative z-10 w-full md:w-auto">
           <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-10 rounded-md shadow-2xl">
-            <p className="text-white/70 text-sm font-bold uppercase tracking-widest mb-2">Tổng số dư</p>
-            <h2 className="font-headline text-4xl md:text-5xl font-black text-white tracking-tighter">
+            <p className="metric-title text-white/80 mb-2">Tổng số dư</p>
+            <h2 className="metric-value text-4xl md:text-5xl text-white">
               {formatCurrency(124500000)}
             </h2>
             <div className="mt-8 flex gap-6">
               <div className="flex-1 bg-white/5 p-4 rounded-md border border-white/10">
-                <p className="text-[10px] uppercase text-white/50 tracking-widest font-bold mb-1">Thu nhập</p>
-                <p className="text-white font-bold text-xl">+{formatCurrency(12400000)}</p>
+                <p className="metric-title text-white/65 mb-1">Thu nhập</p>
+                <p className="text-white font-bold text-xl data-highlight">+{formatCurrency(12400000)}</p>
               </div>
               <div className="flex-1 bg-white/5 p-4 rounded-md border border-white/10">
-                <p className="text-[10px] uppercase text-white/50 tracking-widest font-bold mb-1">Chi tiêu</p>
+                <p className="metric-title text-white/65 mb-1">Chi tiêu</p>
                 <p className="text-white font-bold text-xl">-{formatCurrency(4200000)}</p>
               </div>
             </div>
@@ -70,8 +70,8 @@ export const Dashboard = () => {
             <Chip variant="income">Thu nhập</Chip>
           </div>
           <div>
-            <h3 className="font-headline text-3xl font-bold">{formatCurrency(85000000)}</h3>
-            <p className="text-sm text-on-surface-variant mt-1">Trung bình hàng tháng</p>
+            <h3 className="metric-value text-3xl">{formatCurrency(85000000)}</h3>
+            <p className="section-subtitle mt-1">Trung bình hàng tháng</p>
           </div>
         </Card>
 
@@ -83,8 +83,8 @@ export const Dashboard = () => {
             <Chip variant="expense">Chi tiêu</Chip>
           </div>
           <div>
-            <h3 className="font-headline text-3xl font-bold">{formatCurrency(42150000)}</h3>
-            <p className="text-sm text-on-surface-variant mt-1">Ngân sách còn lại: {formatCurrency(12850000)}</p>
+            <h3 className="metric-value text-3xl">{formatCurrency(42150000)}</h3>
+            <p className="section-subtitle mt-1">Ngân sách còn lại: <span className="data-highlight">{formatCurrency(12850000)}</span></p>
           </div>
         </Card>
 
@@ -97,7 +97,7 @@ export const Dashboard = () => {
           </div>
           <div className="space-y-3">
             <div className="flex justify-between items-end">
-              <h3 className="font-headline text-xl font-bold truncate max-w-[180px]">{featuredGoal.title}</h3>
+              <h3 className="font-headline text-2xl font-bold truncate max-w-[180px]">{featuredGoal.title}</h3>
               <span className="text-sm font-bold text-primary">{goalProgress}%</span>
             </div>
             <Progress value={goalProgress} />
@@ -110,7 +110,7 @@ export const Dashboard = () => {
         {/* Recent Transactions */}
         <div className="lg:col-span-7 space-y-8">
           <div className="flex items-center justify-between">
-            <h3 className="font-headline text-2xl font-bold">Giao dịch Gần đây</h3>
+            <h3 className="section-title text-3xl">Giao dịch Gần đây</h3>
             <button className="text-primary font-bold text-sm flex items-center gap-2 hover:underline">
               Xem tất cả <ArrowRight size={16} />
             </button>
@@ -128,13 +128,13 @@ export const Dashboard = () => {
                   </div>
                   <div className="ml-6 flex-1">
                     <p className="font-bold text-lg text-on-surface">{tx.title}</p>
-                    <p className="text-sm text-on-surface-variant">{tx.category} • {new Date(tx.date).toLocaleDateString('vi-VN')}</p>
+                    <p className="section-subtitle">{tx.category} • {new Date(tx.date).toLocaleDateString('vi-VN')}</p>
                   </div>
                   <div className="text-right">
                     <p className={cn('font-bold text-lg', tx.type === 'income' ? 'text-primary' : 'text-tertiary')}>
                       {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
                     </p>
-                    <p className="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">{tx.method}</p>
+                    <p className="meta-text uppercase font-bold">{tx.method}</p>
                   </div>
                 </div>
               ))}
@@ -144,7 +144,7 @@ export const Dashboard = () => {
 
         {/* Analysis Sidebar */}
         <div className="lg:col-span-5 space-y-8">
-          <h3 className="font-headline text-2xl font-bold">Phân tích Chi tiêu</h3>
+          <h3 className="section-title text-3xl">Phân tích Chi tiêu</h3>
           <Card className="p-8 space-y-8">
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -166,23 +166,23 @@ export const Dashboard = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 rounded-full bg-primary"></div>
-                  <span className="text-sm font-medium">Nhà ở</span>
+                  <span className="text-sm font-medium text-[#333333]">Nhà ở</span>
                 </div>
-                <span className="text-sm font-bold">40%</span>
+                <span className="text-sm font-bold data-highlight">40%</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 rounded-full bg-primary-container"></div>
-                  <span className="text-sm font-medium">Giải trí</span>
+                  <span className="text-sm font-medium text-[#333333]">Giải trí</span>
                 </div>
-                <span className="text-sm font-bold">25%</span>
+                <span className="text-sm font-bold data-highlight">25%</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 rounded-full bg-secondary-container"></div>
-                  <span className="text-sm font-medium">Ăn uống</span>
+                  <span className="text-sm font-medium text-[#333333]">Ăn uống</span>
                 </div>
-                <span className="text-sm font-bold">15%</span>
+                <span className="text-sm font-bold data-highlight">15%</span>
               </div>
             </div>
           </Card>
@@ -194,8 +194,8 @@ export const Dashboard = () => {
                 <Lightbulb size={24} className="text-white/80" />
                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Gợi ý từ Atelier</span>
               </div>
-              <h4 className="font-headline font-bold text-xl">Giảm chi tiêu ăn uống 5%?</h4>
-              <p className="text-sm text-white/80 leading-relaxed">
+              <h4 className="font-headline font-bold text-2xl">Giảm chi tiêu ăn uống 5%?</h4>
+              <p className="text-sm text-white/85 leading-loose">
                 Nếu bạn giảm chi tiêu ăn uống bên ngoài chỉ 5%, bạn sẽ đạt được mục tiêu "{featuredGoal.title}" sớm hơn 2 tháng.
               </p>
               <button className="text-xs font-bold uppercase tracking-widest border-b border-white/40 pb-1 hover:border-white transition-all">
