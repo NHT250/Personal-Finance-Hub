@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color Palette - Editorial Finance Strategy */
+  --color-surface: #f8fafb;
+  --color-surface-container-low: #f2f4f5;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-bright: #f8fafb;
+  --color-on-surface: #191c1d;
+  --color-on-surface-variant: #3e4946;
+  
+  --color-primary: #004f46;
+  --color-primary-container: #00695e;
+  --color-on-primary: #ffffff;
+  
+  --color-secondary-container: #cbe7f5;
+  --color-on-secondary-container: #4e6874;
+  
+  --color-tertiary: #822200;
+  --color-tertiary-container: #a93307;
+  
+  --color-outline-variant: #bec9c5;
+
+  /* Typography */
+  --font-headline: "Manrope", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Spacing */
+  --spacing-4: 1.4rem;
+  --spacing-8: 2.75rem;
+  --spacing-10: 3.5rem;
+
+  /* Border Radius */
+  --radius-xl: 3rem;
+  --radius-md: 1.5rem;
+}
+
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+  body {
+    @apply bg-surface text-on-surface font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline;
+  }
+
+  h1 {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  p, span, label, small {
+    font-family: var(--font-body);
+  }
+}
+
+@layer utilities {
+  .glassmorphism {
+    @apply bg-surface/80 backdrop-blur-[20px];
+  }
+
+  .headline-font {
+    font-family: var(--font-headline);
+  }
+
+  .premium-gradient {
+    @apply bg-gradient-to-br from-primary to-primary-container;
+  }
+
+  .ambient-shadow {
+    box-shadow: 0 32px 64px -12px rgba(25, 28, 29, 0.06);
+  }
+
+  .ghost-border {
+    @apply border border-outline-variant/15;
+  }
+
+  .ghost-border-focus {
+    @apply focus:border-primary/40;
+  }
+
+  .display-balance {
+    font-family: var(--font-headline);
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-on-surface);
+  }
+
+  .eyebrow-label {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+  }
+
+  .meta-text {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+    color: var(--color-on-surface-variant);
+  }
+}
