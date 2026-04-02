@@ -21,7 +21,7 @@ export const LandingPage = ({ onGetStarted, onLogin }: { onGetStarted: () => voi
           </div>
           <div className="hidden md:flex items-center gap-10">
             {[
-              { label: 'Xưởng may', id: 'atelier' },
+              { label: 'Trang chủ', id: 'atelier' },
               { label: 'Triết lý', id: 'philosophy' },
               { label: 'Bảo mật', id: 'security' },
               { label: 'Dịch vụ', id: 'concierge' }
@@ -36,7 +36,7 @@ export const LandingPage = ({ onGetStarted, onLogin }: { onGetStarted: () => voi
               Đăng nhập
             </button>
             <Button onClick={onGetStarted} size="md" className="px-10">
-              Tham gia Atelier
+              Tham gia 
             </Button>
           </div>
         </div>
@@ -54,7 +54,7 @@ export const LandingPage = ({ onGetStarted, onLogin }: { onGetStarted: () => voi
               <div className="inline-flex items-center gap-3 py-2 px-5 rounded-full bg-primary/5 border border-primary/10">
                 <span className="flex h-2 w-2 rounded-full bg-primary animate-ping"></span>
                 <span className="text-[10px] font-black tracking-[0.2em] uppercase text-primary font-headline">
-                  Atelier Tài chính — Phiên bản 2024
+                  Tài chính — Phiên bản 2024
                 </span>
               </div>
               <h1 className="text-7xl md:text-8xl font-extrabold text-primary leading-[0.9] font-headline tracking-tighter">
@@ -66,10 +66,10 @@ export const LandingPage = ({ onGetStarted, onLogin }: { onGetStarted: () => voi
               </p>
               <div className="flex flex-col sm:flex-row gap-6 pt-6">
                 <Button onClick={onGetStarted} size="lg" className="px-12 py-6 text-lg">
-                  Bắt đầu Hành trình
+                  Bắt đầu 
                 </Button>
                 <Button variant="tertiary" size="lg" className="px-12 py-6 text-lg border border-primary/10 hover:bg-surface-container-low">
-                  Khám phá Triết lý
+                  Khám phá
                 </Button>
               </div>
             </div>

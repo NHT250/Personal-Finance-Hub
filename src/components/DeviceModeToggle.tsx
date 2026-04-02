@@ -4,7 +4,7 @@ import { Button } from './Button';
 
 /**
  * DeviceModeToggle toggles a global "mobile-mode" class on the <html> element.
- * This lets CSS (index.css) switch layouts (hide sidebar, stack content, adjust paddings)
+ * This lets CSS (index.css) switch layouts (responsive spacing/stacking while keeping sidebar visible)
  * without forcing a full rerender of the app layout.
  */
 export const DeviceModeToggle = () => {

@@ -22,8 +22,8 @@ export const SignUpPage = ({ onSignUp, onNavigateToLogin }: SignUpPageProps) => 
           <div className="inline-flex items-center justify-center w-20 h-20 premium-gradient rounded-xl mb-6 shadow-2xl shadow-primary/10">
             <span className="font-headline font-black text-white text-3xl">PFH</span>
           </div>
-          <h1 className="text-4xl font-headline font-extrabold tracking-tight text-primary mb-2">Tham gia PFH</h1>
-          <p className="text-on-surface-variant font-medium tracking-wide">Bắt đầu hành trình làm chủ tài chính của bạn</p>
+          <h1 className="text-4xl font-headline font-extrabold tracking-tight text-primary mb-2">Tham Gia PFH</h1>
+          <p className="text-on-surface-variant font-medium tracking-wide">Bắt Đầu Hành Trình Làm Chủ Tài Chính Của Bạn</p>
         </div>
 
         {/* Sign Up Card */}
@@ -63,7 +63,7 @@ export const SignUpPage = ({ onSignUp, onNavigateToLogin }: SignUpPageProps) => 
             />
 
             <Button type="submit" className="w-full py-5 text-base mt-4">
-              Bắt đầu Hành trình
+              Bắt Đầu Hành Trình
             </Button>
           </form>
 
@@ -94,7 +94,7 @@ export const SignUpPage = ({ onSignUp, onNavigateToLogin }: SignUpPageProps) => 
             <p className="text-sm text-on-surface-variant font-medium">
               Đã là thành viên? 
               <button onClick={onNavigateToLogin} className="text-primary font-bold hover:underline underline-offset-4 ml-2">
-                Đăng nhập thay thế
+                Đăng nhập 
               </button>
             </p>
           </div>

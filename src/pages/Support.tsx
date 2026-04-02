@@ -32,7 +32,7 @@ export const Support = () => {
       <section className="relative overflow-hidden rounded-2xl p-16 premium-gradient text-white shadow-2xl shadow-primary/20">
         <div className="relative z-10 max-w-2xl space-y-10">
           <div className="space-y-4">
-            <h2 className="text-5xl font-headline font-extrabold tracking-tighter leading-tight">Chúng tôi có thể giúp gì cho bạn?</h2>
+            <h2 className="text-5xl font-headline font-extrabold tracking-tighter leading-tight">Chúng Tôi Có Thể Giúp Gì Cho Bạn?</h2>
             <p className="text-white/70 text-xl font-light leading-relaxed">
               Khám phá các hướng dẫn, tài liệu và sự hỗ trợ chuyên gia cho mọi khía cạnh trong quản lý tài sản của bạn.
             </p>

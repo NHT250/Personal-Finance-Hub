@@ -22,8 +22,8 @@ export const LoginPage = ({ onLogin, onNavigateToSignUp }: LoginPageProps) => {
           <div className="inline-flex items-center justify-center w-20 h-20 premium-gradient rounded-xl mb-6 shadow-2xl shadow-primary/10">
             <span className="font-headline font-black text-white text-3xl">PFH</span>
           </div>
-          <h1 className="text-4xl font-headline font-extrabold tracking-tight text-primary mb-2">Chào mừng Trở lại</h1>
-          <p className="text-on-surface-variant font-medium tracking-wide">PFH cho Sự giàu có của Bạn</p>
+          <h1 className="text-4xl font-headline font-extrabold tracking-tight text-primary mb-2">Chào Mừng Trở Lại</h1>
+          <p className="text-on-surface-variant font-medium tracking-wide">PFH Cho Sự giàu Có Của Bạn</p>
         </div>
 
         {/* Login Card */}
@@ -60,7 +60,7 @@ export const LoginPage = ({ onLogin, onNavigateToSignUp }: LoginPageProps) => {
             </div>
 
             <Button type="submit" className="w-full py-5 text-base mt-2">
-              Đăng nhập vào Atelier
+              Đăng nhập 
             </Button>
           </form>
 
@@ -88,7 +88,7 @@ export const LoginPage = ({ onLogin, onNavigateToSignUp }: LoginPageProps) => {
 
           {/* Footer Link */}
           <p className="mt-10 text-center text-sm text-on-surface-variant font-medium">
-            Mới sử dụng Atelier? 
+            Mới sử dụng ? 
             <button onClick={onNavigateToSignUp} className="text-primary font-bold hover:underline underline-offset-4 ml-2">
               Tạo tài khoản
             </button>

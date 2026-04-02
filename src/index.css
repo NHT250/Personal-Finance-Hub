@@ -186,11 +186,15 @@
 
 /* Mobile mode toggle styles applied when .mobile-mode is present on html */
 .mobile-mode .sidebar-shell {
-  display: none !important;
+  display: block !important;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
 }
 
 .mobile-mode .content-shell {
-  margin-left: 0 !important;
+  margin-left: 18rem !important;
 }
 
 .mobile-mode .responsive-main {
@@ -224,11 +228,15 @@
   }
 
   .sidebar-shell {
-    display: none;
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999;
   }
 
   .content-shell {
-    margin-left: 0;
+    margin-left: 18rem;
   }
 
   .responsive-main {

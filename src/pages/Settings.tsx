@@ -10,7 +10,7 @@ export const Settings = () => {
     <div className="max-w-5xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Page Header */}
       <div className="space-y-2">
-        <h1 className="text-5xl font-headline font-extrabold text-on-surface tracking-tighter">Cài đặt Hồ Sơ</h1>
+        <h1 className="text-5xl font-headline font-extrabold text-on-surface tracking-tighter">Cài Đặt Hồ Sơ</h1>
         <p className="text-on-surface-variant font-medium text-lg">Quản lý thông tin cá nhân và các giao thức bảo mật của bạn</p>
       </div>
 
@@ -75,12 +75,12 @@ export const Settings = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Input
                 label="Họ và Tên"
-                defaultValue="Alexandra Sterling"
+                defaultValue="Bui Tien Dat"
                 icon={<User size={18} />}
               />
               <Input
                 label="Địa chỉ Email"
-                defaultValue="alexandra@atelier.com"
+                defaultValue="dat@gmail.com"
                 icon={<Mail size={18} />}
               />
               <div className="md:col-span-2">
@@ -95,7 +95,7 @@ export const Settings = () => {
 
           {/* Notification Preferences */}
           <Card variant="lowest" className="p-10 shadow-2xl border border-outline-variant/10">
-            <h4 className="font-headline font-bold text-primary mb-10 text-2xl tracking-tighter">Tùy chọn Liên lạc</h4>
+            <h4 className="font-headline font-bold text-primary mb-10 text-2xl tracking-tighter">Tùy Chọn Liên Lạc</h4>
             <div className="space-y-6">
               {[
                 { icon: Mail, title: 'Thông báo Email', desc: 'Bản tin tài chính hàng tuần và tóm tắt sổ cái.', checked: true },
@@ -126,7 +126,7 @@ export const Settings = () => {
               Hủy Thay đổi
             </Button>
             <Button className="px-12 py-5 shadow-2xl shadow-primary/20">
-              Lưu Cài đặt Atelier
+              Lưu Cài đặt
             </Button>
           </div>
         </div>
